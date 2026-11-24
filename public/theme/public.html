@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista pública</title>
+  <link rel="stylesheet" href="libs/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-light">
+  <main class="container py-5" style="max-width:600px">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="mb-0">Compras del súper</h2>
+        <p class="text-muted">Lista de Juan Pérez</p>
+        <div class="d-flex justify-content-between"><span id="contador">0 de 4 completados</span><span
+            id="porcentaje">0%</span></div>
+        <div class="progress mb-3" style="height:20px">
+          <div id="barra" class="progress-bar bg-success" style="width:0%"></div>
+        </div>
+        <ul class="list-group mb-3" id="lista">
+          <li class="list-group-item"><input class="form-check-input me-2 chk" type="checkbox" data-id="1"
+              id="i1"><label for="i1">Leche</label></li>
+          <li class="list-group-item"><input class="form-check-input me-2 chk" type="checkbox" data-id="2"
+              id="i2"><label for="i2">Pan</label></li>
+          <li class="list-group-item"><input class="form-check-input me-2 chk" type="checkbox" data-id="3"
+              id="i3"><label for="i3">Huevos</label></li>
+          <li class="list-group-item"><input class="form-check-input me-2 chk" type="checkbox" data-id="4"
+              id="i4"><label for="i4">Café</label></li>
+        </ul>
+        <div id="felicitacion" class="alert alert-success text-center d-none">¡Lo lograste! Has completado todos los
+          elementos de tu lista</div>
+      </div>
+    </div>
+  </main>
+  <script src="libs/jquery/jquery-3.6.4.min.js"></script>
+  <script src="libs/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function actualizar() {
+      const total = $(".chk").length, hechos = $(".chk:checked").length, pct = total ? Math.round(hechos * 100 / total) : 0;
+      $("#contador").text(hechos + " de " + total + " completados"); $("#porcentaje").text(pct + "%");
+      $("#barra").css("width", pct + "%");
+      $("#felicitacion").toggleClass("d-none", !(total > 0 && hechos === total));
+      $(".chk").each(function () { $(this).next("label").toggleClass("text-decoration-line-through text-muted", this.checked); });
+    }
+    $(".chk").on("change", function () {
+      // En Laravel: fetch("/{token}/items/"+this.dataset.id,{method:"PUT",headers:{"Content-Type":"application/json","X-CSRF-TOKEN":token},body:JSON.stringify({completado:this.checked})})
+      actualizar();
+    });
+    actualizar();
+  </script>
+</body>
+
+</html>

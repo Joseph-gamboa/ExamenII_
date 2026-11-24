@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis listas</title>
+    <link rel="stylesheet" href="libs/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container"><a class="navbar-brand" href="index.html">Mis Listas</a>
+            <div class="d-flex align-items-center text-white gap-3"><span>Juan Pérez</span><a href="login.html"
+                    class="btn btn-outline-light btn-sm">Cerrar sesión</a></div>
+        </div>
+    </nav>
+    <main class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Mis listas</h2><a href="create.html" class="btn btn-primary">+ Nueva lista</a>
+        </div>
+        <table class="table table-striped bg-white shadow-sm align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Token</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Compras del súper</td>
+                    <td><code>aB3dE5fG7hJ9kL1mN2pQ</code></td>
+                    <td class="text-end">
+                        <a href="public.html" class="btn btn-sm btn-info">Ver pública</a>
+                        <a href="https://wa.me/?text=http://localhost/aB3dE5fG7hJ9kL1mN2pQ" target="_blank"
+                            class="btn btn-sm btn-success">WhatsApp</a>
+                        <a href="edit.html" class="btn btn-sm btn-warning">Editar</a>
+                        <form class="d-inline form-eliminar"><button class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Tareas de la semana</td>
+                    <td><code>Zx8Cv6Bn4Mq2Wr0Ty9Ui</code></td>
+                    <td class="text-end">
+                        <a href="public.html" class="btn btn-sm btn-info">Ver pública</a>
+                        <a href="https://wa.me/?text=http://localhost/Zx8Cv6Bn4Mq2Wr0Ty9Ui" target="_blank"
+                            class="btn btn-sm btn-success">WhatsApp</a>
+                        <a href="edit.html" class="btn btn-sm btn-warning">Editar</a>
+                        <form class="d-inline form-eliminar"><button class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <script src="libs/jquery/jquery-3.6.4.min.js"></script>
+    <script src="libs/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script>$(".form-eliminar").on("submit", function (e) { if (!confirm("¿Seguro que desea eliminar esta lista?")) e.preventDefault(); });</script>
+</body>
+
+</html>

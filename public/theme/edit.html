@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editar lista</title>
+<link rel="stylesheet" href="libs/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark"><div class="container"><a class="navbar-brand" href="index.html">Mis Listas</a><div class="d-flex align-items-center text-white gap-3"><span>Juan Pérez</span><a href="login.html" class="btn btn-outline-light btn-sm">Cerrar sesión</a></div></div></nav>
+<main class="container py-4" style="max-width:700px">
+<h2 class="mb-3">Editar lista</h2>
+<form class="card card-body shadow-sm" action="index.html">
+<div class="mb-3"><label class="form-label">Título</label><input type="text" name="titulo" class="form-control" value="Compras del súper" required></div>
+<label class="form-label">Elementos</label>
+<div id="items"><div class="input-group mb-2 item"><input type="text" name="items[]" class="form-control" value="Leche" required><button type="button" class="btn btn-outline-danger btn-quitar">Eliminar</button></div><div class="input-group mb-2 item"><input type="text" name="items[]" class="form-control" value="Pan" required><button type="button" class="btn btn-outline-danger btn-quitar">Eliminar</button></div></div>
+<button type="button" id="btnAgregar" class="btn btn-outline-primary btn-sm mb-3">+ Agregar elemento</button>
+<div class="d-flex gap-2"><button class="btn btn-primary">Guardar</button><a href="index.html" class="btn btn-secondary">Cancelar</a></div>
+</form></main>
+<script src="libs/jquery/jquery-3.6.4.min.js"></script>
+<script src="libs/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+<script>
+$(function(){
+  function fila(v){ return `<div class="input-group mb-2 item"><input type="text" name="items[]" class="form-control" value="${v||""}" placeholder="Elemento" required><button type="button" class="btn btn-outline-danger btn-quitar">Eliminar</button></div>`; }
+  $("#btnAgregar").on("click", function(){ $("#items").append(fila()); });
+  $("#items").on("click",".btn-quitar", function(){ $(this).closest(".item").remove(); });
+});
+</script>
+</body></html>
