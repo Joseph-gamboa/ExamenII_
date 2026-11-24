@@ -3,51 +3,116 @@
 
 @section('contenido')
 
-<main class="container py-4">
+<main class="container py-4" style="max-width:700px">
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
-            <h4 class="mb-0">Editar lista</h4>
+    <h2 class="mb-3">Editar lista</h2>
+
+    <form class="card card-body shadow-sm"
+          action="{{ route('listas.update', $lista->id_lista) }}"
+          method="POST">
+
+        @csrf
+        @method('PUT')
+
+        <div class="mb-3">
+
+            <label class="form-label">Título</label>
+
+            <input type="text"
+                   name="titulo"
+                   class="form-control"
+                   value="{{ old('titulo', $lista->titulo) }}"
+                   required>
+
         </div>
 
-        <div class="card-body">
+        <label class="form-label">Elementos actuales</label>
 
-            <form action="{{ route('listas.update', $lista->id_lista) }}" method="POST">
+        <div id="items">
 
-                @csrf
-                @method('PUT')
+            @foreach ($lista->items as $item)
 
-                <div class="mb-3">
-                    <label class="form-label">Título de la lista</label>
+                <div class="input-group mb-2 item">
 
                     <input type="text"
-                           name="titulo"
+                           name="items[{{ $item->id_item }}]"
                            class="form-control"
-                           value="{{ old('titulo', $lista->titulo) }}"
+                           value="{{ $item->descripcion }}"
                            required>
-                    
-                    @error('titulo')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
 
-                <div class="d-flex gap-2">
-
-                    <button type="submit" class="btn btn-primary">
-                        Guardar cambios
+                    <button type="button"
+                            class="btn btn-outline-danger btn-quitar">
+                        Eliminar
                     </button>
 
-                    <a href="{{ route('listas.index') }}" class="btn btn-secondary">
-                        Cancelar
-                    </a>
-
                 </div>
 
-            </form>
+            @endforeach
 
         </div>
-    </div>
+
+        <label class="form-label mt-2">Nuevos elementos</label>
+
+        <div id="nuevos"></div>
+
+        <button type="button"
+                id="btnAgregar"
+                class="btn btn-outline-primary btn-sm mb-3">
+            + Agregar elemento
+        </button>
+
+        <div class="d-flex gap-2">
+
+            <button type="submit" class="btn btn-primary">
+                Guardar cambios
+            </button>
+
+            <a href="{{ route('listas.index') }}"
+               class="btn btn-secondary">
+                Cancelar
+            </a>
+
+        </div>
+
+    </form>
 
 </main>
+
+@endsection
+
+@section('scripts')
+
+<script>
+    $(document).ready(function () {
+
+        // Agregar nuevos elementos
+        $('#btnAgregar').click(function () {
+
+            $('#nuevos').append(`
+                <div class="input-group mb-2 item">
+
+                    <input type="text"
+                           name="nuevos[]"
+                           class="form-control"
+                           placeholder="Nuevo elemento"
+                           required>
+
+                    <button type="button"
+                            class="btn btn-outline-danger btn-quitar">
+                        Eliminar
+                    </button>
+
+                </div>
+            `);
+
+        });
+
+        // Eliminar elementos
+        $('#items, #nuevos').on('click', '.btn-quitar', function () {
+            $(this).closest('.item').remove();
+        });
+
+    });
+</script>
 
 @endsection

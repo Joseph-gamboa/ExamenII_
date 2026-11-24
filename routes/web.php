@@ -2,42 +2,67 @@
 <?php
 
 use App\Http\Controllers\controllerListas;
-use App\Http\Controllers\ControllerItems;
+use App\Http\Controllers\ControllerAuth;
 use Illuminate\Support\Facades\Route;
 
-// INICIO
-Route::get('/', [controllerListas::class, 'index'])->name('home');
+// Página principal
+Route::get('/', function () {
+    return redirect()->route('listas.index');
+});
 
-// LISTAS
-Route::get('/listas', [controllerListas::class, 'index'])
-    ->name('listas.index');
+// Login
+Route::middleware('guest')->group(function () {
 
-// CREAR LISTA
-Route::get('/listas/create', [controllerListas::class, 'create'])
-    ->name('listas.create');
+    Route::get('/login', function () {
+        return view('login.index');
+    })->name('login');
 
-Route::post('/listas', [controllerListas::class, 'store'])
-    ->name('listas.store');
+    // Redireccionar a Google
+    Route::get('/auth/google', [ControllerAuth::class, 'redirectGoogle'])
+        ->name('google');
 
-// EDITAR LISTA
-Route::get('/listas/{id}/edit', [controllerListas::class, 'edit'])
-    ->name('listas.edit');
+    // Respuesta de Google
+    Route::get('/auth/google/callback', [ControllerAuth::class, 'callbackGoogle'])
+        ->name('google.callback');
 
-// ACTUALIZAR LISTA
-Route::put('/listas/{id}', [controllerListas::class, 'actualizar'])
-    ->name('listas.update');
+});
 
-// ELIMINAR LISTA
-Route::delete('/listas/{id}', [controllerListas::class, 'eliminar'])
-    ->name('listas.destroy');
+// Cerrar sesión
+Route::post('/logout', [ControllerAuth::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
-// GESTIÓN PÚBLICA DE ITEMS
+// Gestión privada de listas
+Route::middleware('auth')->group(function () {
+
+    Route::get('/listas', [controllerListas::class, 'index'])
+        ->name('listas.index');
+
+    Route::get('/listas/crear', [controllerListas::class, 'create'])
+        ->name('listas.create');
+
+    Route::post('/listas', [controllerListas::class, 'store'])
+        ->name('listas.store');
+
+    Route::get('/listas/{lista}/editar', [controllerListas::class, 'edit'])
+        ->name('listas.edit');
+
+    Route::put('/listas/{lista}', [controllerListas::class, 'actualizar'])
+        ->name('listas.update');
+
+    Route::delete('/listas/{lista}', [controllerListas::class, 'destroy'])
+        ->name('listas.destroy');
+
+});
+
+use App\Http\Controllers\ControllerItems;
+
+// Gestión pública de listas
+
 Route::put('/{token}/items/{item}', [ControllerItems::class, 'update'])
-    ->where('token', '[A-Za-z0-9_-]+')
+    ->where('token', '[A-Za-z0-9]+')
     ->name('lista.items.update');
 
-// LISTA PÚBLICA
-// Esta ruta debe quedar al final.
 Route::get('/{token}', [controllerListas::class, 'publica'])
-    ->where('token', '[A-Za-z0-9_-]+')
-    ->name('publica.index');
+    ->where('token', '[A-Za-z0-9]+')
+    ->name('publica.index');    

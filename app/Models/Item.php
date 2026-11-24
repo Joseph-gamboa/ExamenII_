@@ -7,13 +7,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Item extends Model
 {
-     protected $table = 'items';
+    protected $table = 'items';
+
     protected $primaryKey = 'id_item';
+
     public $timestamps = false;
 
-    protected $fillable = ['id_lista', 'descripcion', 'completado'];
-
-    protected $casts = ['completado' => 'boolean'];
+    protected $fillable = [
+        'id_lista',
+        'descripcion',
+        'completado'
+    ];
 
     public function lista(): BelongsTo
     {
